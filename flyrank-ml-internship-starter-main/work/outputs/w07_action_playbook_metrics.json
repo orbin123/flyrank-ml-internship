@@ -1,0 +1,254 @@
+{
+  "assignment": "ML-10",
+  "scope": "offline held-out starter-slice CTR review playbook; non-production",
+  "versions": {
+    "python": "3.11.15",
+    "pandas": "3.0.6",
+    "numpy": "2.4.6",
+    "scikit_learn": "1.9.1"
+  },
+  "data_sha256": "c43bdac4eccfa17fcd8a33974fe36f2c998c03a3ae3af8d80cf712abab5d6396",
+  "seed": 42,
+  "source_receipts": {
+    "work/outputs/w05_model_metrics.json": "c1bb9ce4d40022884011557b4a9fde3c5106f9c4f97d9529e662a96cc8344d31",
+    "work/outputs/w06_validation_audit_metrics.json": "d370618eb80a003704bdf77151c1b6c318dc5441a56f75ad6b3e9d5c5b50e4ab"
+  },
+  "selected_method": "Week-4 peer rule (train-only)",
+  "score_inputs": [
+    "impressions_90d",
+    "clicks_90d",
+    "avg_position",
+    "content_type"
+  ],
+  "action_context_only": [
+    "days_since_last_update",
+    "impressions_prev_30d",
+    "impressions_last_30d"
+  ],
+  "policy": {
+    "minimum_impressions": 500,
+    "position_edges": [
+      0,
+      3,
+      10,
+      20
+    ],
+    "minimum_training_peer_pages": 30,
+    "minimum_training_peer_clients": 3,
+    "review_budget": 20,
+    "client_cap": 5,
+    "stale_days": 181,
+    "recent_update_days": 30,
+    "minimum_previous_30d_impressions": 100,
+    "decline_threshold_pct": -20
+  },
+  "split": [
+    {
+      "partition": "train",
+      "pages": 6519,
+      "clients": 16
+    },
+    {
+      "partition": "validation",
+      "pages": 4669,
+      "clients": 6
+    },
+    {
+      "partition": "test",
+      "pages": 821,
+      "clients": 6
+    }
+  ],
+  "test_supported_pages": 760,
+  "test_deferred_pages": 61,
+  "test_nonpositive_gap_pages": 267,
+  "positive_gap_candidates": 493,
+  "reproduced_peer_test_weighted_MAE_pp": 0.38343594859252395,
+  "archetype_summary": [
+    {
+      "archetype": "page_one_low_capture",
+      "pages": 30,
+      "clients": 2,
+      "median_priority_proxy": 4.2981620977
+    },
+    {
+      "archetype": "recent_update_observe",
+      "pages": 423,
+      "clients": 5,
+      "median_priority_proxy": 4.2107670462
+    },
+    {
+      "archetype": "stale_and_observed_decline",
+      "pages": 6,
+      "clients": 2,
+      "median_priority_proxy": 2.9858895615
+    },
+    {
+      "archetype": "striking_distance_low_capture",
+      "pages": 33,
+      "clients": 4,
+      "median_priority_proxy": 3.7839329117
+    },
+    {
+      "archetype": "top_visibility_low_capture",
+      "pages": 1,
+      "clients": 1,
+      "median_priority_proxy": 3.4467480382
+    }
+  ],
+  "decay_context_summary": [
+    {
+      "context": "all positive-gap candidates",
+      "pages": 493
+    },
+    {
+      "context": "trend denominator assessable (previous >=100)",
+      "pages": 469
+    },
+    {
+      "context": "observed >20% impression decline",
+      "pages": 425
+    },
+    {
+      "context": "stale and observed decline (before recent-update precedence)",
+      "pages": 6
+    },
+    {
+      "context": "recent update: observe",
+      "pages": 423
+    }
+  ],
+  "allocation": [
+    {
+      "queue": "canonical top-20",
+      "filled_slots": 20,
+      "clients": 2,
+      "largest_client_slot_share": 0.95,
+      "editorial_precision": "unavailable"
+    },
+    {
+      "queue": "review batch: max 5/client",
+      "filled_slots": 20,
+      "clients": 6,
+      "largest_client_slot_share": 0.25,
+      "editorial_precision": "unavailable"
+    }
+  ],
+  "freshness_permutation_evidence": {
+    "feature": "days_since_last_update",
+    "increase_weighted_MAE_pp": -0.0041002011,
+    "shuffle_SD_pp": 0.0029668668
+  },
+  "cost_assumptions": {
+    "triage_minutes_per_slot": 15,
+    "maximum_pilots": 4,
+    "hours_per_pilot": 2,
+    "current_planned_hours": 13.0,
+    "actual_cost_or_value_measured": false
+  },
+  "cost_scenarios": [
+    {
+      "assumed_labor_USD_per_hour": 15,
+      "planned_hours": 13.0,
+      "labor_cost_USD": 195.0,
+      "assumed_USD_per_attributable_click": 0.1,
+      "break_even_incremental_clicks": 1950
+    },
+    {
+      "assumed_labor_USD_per_hour": 15,
+      "planned_hours": 13.0,
+      "labor_cost_USD": 195.0,
+      "assumed_USD_per_attributable_click": 0.5,
+      "break_even_incremental_clicks": 390
+    },
+    {
+      "assumed_labor_USD_per_hour": 15,
+      "planned_hours": 13.0,
+      "labor_cost_USD": 195.0,
+      "assumed_USD_per_attributable_click": 1.0,
+      "break_even_incremental_clicks": 195
+    },
+    {
+      "assumed_labor_USD_per_hour": 30,
+      "planned_hours": 13.0,
+      "labor_cost_USD": 390.0,
+      "assumed_USD_per_attributable_click": 0.1,
+      "break_even_incremental_clicks": 3900
+    },
+    {
+      "assumed_labor_USD_per_hour": 30,
+      "planned_hours": 13.0,
+      "labor_cost_USD": 390.0,
+      "assumed_USD_per_attributable_click": 0.5,
+      "break_even_incremental_clicks": 780
+    },
+    {
+      "assumed_labor_USD_per_hour": 30,
+      "planned_hours": 13.0,
+      "labor_cost_USD": 390.0,
+      "assumed_USD_per_attributable_click": 1.0,
+      "break_even_incremental_clicks": 390
+    },
+    {
+      "assumed_labor_USD_per_hour": 60,
+      "planned_hours": 13.0,
+      "labor_cost_USD": 780.0,
+      "assumed_USD_per_attributable_click": 0.1,
+      "break_even_incremental_clicks": 7800
+    },
+    {
+      "assumed_labor_USD_per_hour": 60,
+      "planned_hours": 13.0,
+      "labor_cost_USD": 780.0,
+      "assumed_USD_per_attributable_click": 0.5,
+      "break_even_incremental_clicks": 1560
+    },
+    {
+      "assumed_labor_USD_per_hour": 60,
+      "planned_hours": 13.0,
+      "labor_cost_USD": 780.0,
+      "assumed_USD_per_attributable_click": 1.0,
+      "break_even_incremental_clicks": 780
+    }
+  ],
+  "monitoring_baseline": {
+    "eligible_test_pages": 821,
+    "supported_share": 0.925700365408039,
+    "position_mix": {
+      ">3-10": 0.5152253349573691,
+      ">10-20": 0.46163215590742995,
+      "1-3": 0.023142509135200974
+    },
+    "type_mix": {
+      "keyword article": 0.925700365408039,
+      "feedly article": 0.07429963459196103
+    },
+    "peer_weighted_MAE_pp": 0.38343594859252395,
+    "canonical_top20_max_client_share": 0.95,
+    "source_export_timestamp": null,
+    "independent_review_count": 0,
+    "editorial_actionability": null
+  },
+  "initial_alerts": [
+    "FRESHNESS_UNKNOWN: source timestamp required before operational use",
+    "CONCENTRATION: use capped human-review allocation"
+  ],
+  "independent_editorial_labels": 0,
+  "editorial_precision_at_20": null,
+  "editorial_base_rate": null,
+  "refresh_effect": null,
+  "expected_recovered_clicks": null,
+  "human_reviews_completed": 0,
+  "edits_performed": 0,
+  "automated_edits_allowed": false,
+  "limitations": [
+    "Concurrent windows",
+    "Unknown source timestamp",
+    "No temporal or causal validation",
+    "No independent editorial outcome",
+    "Unsupported peers deferred",
+    "Broad pooled peers and client concentration",
+    "OOF audit reuses inspected clients; naive CTR reference has lower grouped weighted MAE"
+  ],
+  "verification": "training-only peer reconstruction, held-out metric, action mapping, capacity cap and export round-trips passed"
+}

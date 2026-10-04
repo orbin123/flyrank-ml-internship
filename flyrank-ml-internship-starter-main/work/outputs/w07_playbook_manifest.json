@@ -1,0 +1,36 @@
+{
+  "assignment": "ML-10",
+  "input_sha256": "c43bdac4eccfa17fcd8a33974fe36f2c998c03a3ae3af8d80cf712abab5d6396",
+  "exports": [
+    {
+      "path": "work/outputs/w07_ranked_action_queue.csv",
+      "sha256": "9210900a334c2eba1547de82f8d5c9c03c1b2c26a07cd5df3962e68e7b00a9e1",
+      "commit_policy": "ignored local queue"
+    },
+    {
+      "path": "work/outputs/w07_review_batch.csv",
+      "sha256": "2a112d0accde83cc232428fcb8f75861c3da92c9387f91f3a6225b3f7ca28dce",
+      "commit_policy": "ignored local queue"
+    },
+    {
+      "path": "work/outputs/w07_review_template.csv",
+      "sha256": "07c15fed55e6e46e6703e81a86f17d5d86897486bd5d854bafc2750cdfcce8f2",
+      "commit_policy": "ignored local queue"
+    },
+    {
+      "path": "work/outputs/w07_action_playbook_metrics.json",
+      "sha256": "2fb3fed8b026dae08be01dc2e338c1c2258a0efe4f766da15218b84568e3fe86",
+      "commit_policy": "public aggregate receipt or figure"
+    },
+    {
+      "path": "work/outputs/w07_action_playbook.png",
+      "sha256": "e860414a4943d2840485c73a7db2e135e12deb7dce684596fc160fd3f95da410",
+      "commit_policy": "public aggregate receipt or figure"
+    },
+    {
+      "path": "work/figures/w07_action_playbook.png",
+      "sha256": "e860414a4943d2840485c73a7db2e135e12deb7dce684596fc160fd3f95da410",
+      "commit_policy": "public aggregate receipt or figure"
+    }
+  ]
+}

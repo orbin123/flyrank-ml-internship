@@ -1,0 +1,133 @@
+{
+  "assignment": "ML-07",
+  "lane": "CTR / Engagement Opportunity Scoring (CTR only)",
+  "input_sha256": "c43bdac4eccfa17fcd8a33974fe36f2c998c03a3ae3af8d80cf712abab5d6396",
+  "python": "3.11.15",
+  "pandas": "3.0.6",
+  "numpy": "2.4.6",
+  "analysis_type": "same-snapshot descriptive decision-support; no training or future claims",
+  "input_rows": 30000,
+  "input_clients": 32,
+  "score_inputs": [
+    "content_type",
+    "avg_position",
+    "impressions_90d",
+    "clicks_90d"
+  ],
+  "grouping_keys": [
+    "content_id",
+    "client_id"
+  ],
+  "policy": {
+    "minimum_impressions": 500,
+    "position_range": [
+      1,
+      20
+    ],
+    "position_edges": [
+      0,
+      3,
+      10,
+      20
+    ],
+    "minimum_peer_pages": 30,
+    "minimum_other_clients": 3,
+    "review_budget_K": 20,
+    "peer_method": "pooled CTR excluding candidate's entire client"
+  },
+  "signal_verdicts": {
+    "position_vs_ctr": "MIXED",
+    "volume_resolution": "CONFIRMED"
+  },
+  "position_buckets": [
+    {
+      "position_band": "1–3",
+      "n": 466,
+      "clients": 17,
+      "impressions": 7436196,
+      "clicks": 36784,
+      "median_page_ctr_pct": 0.2296801769,
+      "pooled_ctr_pct": 0.4946615178
+    },
+    {
+      "position_band": ">3–10",
+      "n": 7084,
+      "clients": 28,
+      "impressions": 88871350,
+      "clicks": 309691,
+      "median_page_ctr_pct": 0.2367805272,
+      "pooled_ctr_pct": 0.3484711327
+    },
+    {
+      "position_band": ">10–20",
+      "n": 4459,
+      "clients": 25,
+      "impressions": 22384996,
+      "clicks": 78544,
+      "median_page_ctr_pct": 0.1734486615,
+      "pooled_ctr_pct": 0.3508778827
+    }
+  ],
+  "volume_buckets": [
+    {
+      "volume_band": "1–99",
+      "n": 5094,
+      "clients": 30,
+      "median_one_click_step_pp": 6.6666666667,
+      "max_one_click_step_pp": 100.0,
+      "zero_click_pct": 86.0031409501,
+      "median_wilson_width_pp": 21.5310802738
+    },
+    {
+      "volume_band": "100–499",
+      "n": 3061,
+      "clients": 28,
+      "median_one_click_step_pp": 0.4,
+      "max_one_click_step_pp": 1.0,
+      "zero_click_pct": 59.9150604378,
+      "median_wilson_width_pp": 1.9032060327
+    },
+    {
+      "volume_band": "500–999",
+      "n": 2010,
+      "clients": 28,
+      "median_one_click_step_pp": 0.1402524544,
+      "max_one_click_step_pp": 0.2,
+      "zero_click_pct": 32.7860696517,
+      "median_wilson_width_pp": 0.7729502649
+    },
+    {
+      "volume_band": "1000–4999",
+      "n": 5305,
+      "clients": 27,
+      "median_one_click_step_pp": 0.0446428571,
+      "max_one_click_step_pp": 0.1,
+      "zero_click_pct": 9.8397737983,
+      "median_wilson_width_pp": 0.4041249234
+    },
+    {
+      "volume_band": "5000+",
+      "n": 4694,
+      "clients": 24,
+      "median_one_click_step_pp": 0.0084331283,
+      "max_one_click_step_pp": 0.02,
+      "zero_click_pct": 0.6817213464,
+      "median_wilson_width_pp": 0.1744411061
+    }
+  ],
+  "eligible_pages": 12009,
+  "supported_pages": 11911,
+  "unsupported_pages": 98,
+  "positive_gap_queue_pages": 8429,
+  "top_10_reviewed_rows": 10,
+  "top_10_clients": 4,
+  "top_20_clients": 5,
+  "top_20_overlap_impressions_only": 10,
+  "top_20_overlap_client_balanced_diagnostic": 16,
+  "independent_editorial_labels": 0,
+  "precision_at_20": null,
+  "editorial_base_rate": null,
+  "metric_limitation": "Independent editorial judgments absent; rule outputs are not labels.",
+  "output_csv": "work/outputs/baseline_action_score.csv",
+  "verification": "allowlist, grain, support, ranking, peer exclusion and CSV round-trip passed"
+}

@@ -1,0 +1,47 @@
+name: ML-11 paper checks
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - docs/**
+      - flyrank-ml-internship-starter-main/work/**
+      - flyrank-ml-internship-starter-main/submission/paper_url.txt
+      - .github/workflows/paper-checks.yml
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reproduce-paper:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: flyrank-ml-internship-starter-main/work/requirements-w05.txt
+      - name: Install pinned analysis dependencies
+        run: pip install -r flyrank-ml-internship-starter-main/work/requirements-w05.txt
+      - name: Execute capstone and verify public paper
+        run: python flyrank-ml-internship-starter-main/work/scripts/run_capstone.py
+      - name: Verify tracked data stays within the approved starter examples
+        run: |
+          python - <<'PY'
+          import subprocess
+          from pathlib import PurePosixPath
+          tracked = subprocess.check_output(['git', 'ls-files'], text=True).splitlines()
+          allowed_csv = {
+              'flyrank-ml-internship-starter-main/data/raw/content_refresh_anonymized.csv',
+              'flyrank-ml-internship-starter-main/outputs/refresh_queue_sample.csv',
+          }
+          for name in tracked:
+              suffix = PurePosixPath(name).suffix.lower()
+              assert suffix not in {'.parquet', '.zip', '.tar', '.gz', '.feather'}, 'Unexpected data archive'
+              assert suffix != '.csv' or name in allowed_csv, 'Unexpected dataset/queue CSV'
+          print('PASS: no new datasets or row-level queues tracked.')
+          PY

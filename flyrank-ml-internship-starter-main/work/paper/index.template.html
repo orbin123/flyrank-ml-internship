@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An honest client-holdout comparison of CTR benchmarks and an offline editorial review playbook, using the FlyRank internship starter dataset.">
+  <meta name="author" content="Orbin Sunny">
+  <meta name="color-scheme" content="light">
+  <title>Can a learned CTR benchmark improve editorial review prioritization? — Orbin Sunny</title>
+  <link rel="canonical" href="https://orbin123.github.io/flyrank-ml-internship/">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#paper">Skip to paper</a>
+<header class="masthead"><a href="#top">OS / SEARCH INTELLIGENCE</a><a href="@@REPO@@">Code &amp; notebooks ↗</a></header>
+<div class="layout" id="top">
+<nav class="contents" aria-label="Paper contents">
+  <p class="eyebrow">In this paper</p>
+  <a href="#abstract">Abstract</a>
+  <a href="#introduction">01 / Problem</a>
+  <a href="#data">02 / Data</a>
+  <a href="#methodology">03 / Methodology</a>
+  <a href="#results">04 / Results</a>
+  <a href="#limitations">05 / Limitations</a>
+  <a href="#recommendations">06 / Recommendations</a>
+  <a href="#reproducibility">07 / Reproducibility</a>
+  <a href="#acknowledgments">08 / Data credit</a>
+  <p class="nav-note">An internship research artifact.<br>Not peer reviewed.</p>
+</nav>
+<main id="paper">
+<article>
+<div class="paper-header">
+  <p class="eyebrow">FlyRank ML Internship / ML-11 / Research paper</p>
+  <h1>Can a learned CTR benchmark improve editorial review prioritization?</h1>
+  <p class="dek">A client-holdout study finds no exposure-weighted error advantage for the learned models, and defines what evidence an editorial review queue still needs.</p>
+  <div class="byline"><span><strong>Orbin Sunny</strong><br>Machine Learning track</span><span><strong>4 October 2026</strong><br>CTR opportunity scoring</span></div>
+  <p class="scope-label">30,000-page starter snapshot · Same-window estimation · Human review proposed</p>
+</div>
+
+<section id="abstract" class="abstract" aria-labelledby="abstract-title">
+  <h2 id="abstract-title">Abstract</h2>
+  <p>@@ABSTRACT@@</p>
+</section>
+
+<section id="introduction">
+  <p class="section-number">01 / Introduction</p>
+  <h2>Review attention is scarce; a CTR gap is only a starting point.</h2>
+  <p>An editor can inspect 20 pages in a review cycle, but thousands of visible pages capture few search clicks. A single low-CTR threshold does little to order that work: exact CTR below 0.5% flags 9,773 of the 12,009 eligible starter pages, or 81.38% of the pool.</p>
+  <p>The research question is whether a learned position-aware benchmark estimates observed CTR more accurately than a transparent position/content-type peer rule on unseen clients. The practical decision is which visible pages deserve authorized snippet, intent and measurement review. The unit of analysis is one page; the proposed output is a ranked queue with explicit reasons and abstentions.</p>
+  <p>A false positive wastes editorial time and may encourage a harmful unnecessary edit; a false negative leaves a possible opportunity uninspected. CTR estimation is a measurable surrogate for this decision. It is not an independent judgment that a page needs action, and the experiment does not measure improved traffic after editing.</p>
+</section>
+
+<section id="data">
+  <p class="section-number">02 / Data</p>
+  <h2>The main study uses the starter snapshot, with a separate warehouse exercise.</h2>
+  <p>The main results use the approved <code>content_refresh_anonymized.csv</code>: 30,000 pseudonymized pages, 32 clients and 44 columns. Each page has trailing-90-day search measurements. The bundled file does not supply a source export timestamp, release identifier or trustworthy calendar boundaries; “90 days” is a relative window, and the paper date is not the data date.</p>
+  @@DATA_TABLE@@
+  <p>The exposure/position policy retains 12,009 pages across 28 clients. Sequential exclusions remove 13,274 pages below 500 impressions, then 4,717 remaining pages without a recorded position in 1–20. Position zero denotes missing measurement; 1,205 such rows exist in the full input. Another 92 full-input rows have positive positions below 1 and are excluded by the explicit position policy. The loaded count, key and feature fields have no missing values, duplicate page keys or impossible click counts.</p>
+  <p>Only seven fields enter the model experiment: page/client keys for validation, clicks/impressions for target and weights, and the three allowlisted features. Titles, client names, domains, page URLs and raw queries are not used or published. The paper and downloadable evidence contain aggregate results; row-level queues stay local and ignored by Git.</p>
+  <details>
+    <summary>Warehouse provenance and window checks</summary>
+    <p>The separate <a href="@@SOURCE@@/work/notebooks/w03_data_contract.ipynb">data-contract notebook</a> uses warehouse release <code>v20260703</code>, pinned to revision <code>50cbf7c3909d07be4d1b5906b4d09e882e5acbf2</code>. It reads only the March 2026 partition of <code>fact_content_daily_performance</code> and <code>dim_clients</code>. The recorded March slice contains 9,841,378 rows across 55 clients, with 413,966 rows passing <code>ga4_data_available IS TRUE</code>.</p>
+    <p>Features use 1–15 March 2026; 16–18 March are unused for an assumed reporting lag; labels use 19–31 March. Requiring complete availability and exposure yields only 137 labeled pages across five clients. That exercise demonstrates a development-time leakage check, not the main paper's CTR-regression result. Its saved evidence is linked for inspection and is not rerun by the token-free capstone build.</p>
+    <p>The release's daily fact has 78,835,655 rows according to the <a href="https://huggingface.co/datasets/FlyRank/internship-warehouse">dataset card</a>. This paper does not claim that its main model trained or was evaluated on all those rows. June, the latest-month sample, query-90d facts and final-snapshot content metadata were excluded from the March exercise to preserve its window boundary.</p>
+  </details>
+</section>
+
+<section id="methodology">
+  <p class="section-number">03 / Methodology</p>
+  <h2>Freeze the comparison before looking at test outcomes.</h2>
+  <h3>Target and review proxy</h3>
+  <p>The regression target is <code>observed_CTR_pct = 100 × clicks_90d / impressions_90d</code>, recomputed from counts rather than rounded stored CTR. A value of 0.5 means 0.5%, and differences are percentage points (pp). The target and average-position feature come from the same snapshot; this is concurrent cross-client estimation, not future prediction.</p>
+  <div class="equation" aria-label="Review priority formula">Review priority = impressions × max(peer CTR − observed CTR, 0) / 100</div>
+  <p>This score has click-count units but is a <strong>click-equivalent review proxy</strong>, not recoverable clicks. The missing operational target is an independent editor's <code>review_worth_action</code> judgment. Neither low CTR nor the scoring rule creates that label.</p>
+  <h3>Baseline, features and model settings</h3>
+  <p>The baseline pools training clicks and impressions within content type and position bands 1–3, &gt;3–10 and &gt;10–20. A cohort needs at least 30 training pages and three training clients; unsupported held-out pages abstain. The earlier exploratory rule excluded a candidate's whole client; the evaluated baseline instead uses only separate training clients.</p>
+  <p>The shallow tree and random forest use exactly <code>avg_position</code>, <code>content_type</code> and <code>days_since_last_update</code>. Content type is one-hot encoded with unknown categories ignored; preprocessing is fitted inside the training pipeline. No imputation is needed for these fields. The tree has depth 3 and minimum leaf size 100; the forest has 200 trees, depth 6, minimum leaf size 50, bootstrap enabled and one worker. Both use seed 42 and training impression weights normalized by mean impressions. No hyperparameter search is performed.</p>
+  <h3>Validation design and metric</h3>
+  <p>Seed-42 <code>GroupShuffleSplit</code> reserves 20% of eligible clients for test, then 25% of development clients for validation. These fractions apply to groups, not page counts. The resulting train/validation/test partitions contain 16/6/6 disjoint clients, with no page or client overlap.</p>
+  @@SPLIT_TABLE@@
+  <p>Exposure-weighted mean absolute error is <code>Σ impressions × |estimated CTR − observed CTR| / Σ impressions</code>, in pp; lower is better. Page MAE weights every page equally; equal-client MAE averages each client's page MAE equally. Model selection uses validation weighted MAE, with the baseline winning ties. The chosen method is frozen before test evaluation; all three methods use the same supported evaluation pages.</p>
+  <p>A later audit retrains the frozen forest configuration in five shuffled row-random folds and five shuffled client-grouped folds, comparing only the common supported pool. A naive baseline predicts each fold's pooled training CTR. This audit reuses clients inspected earlier, so it is a diagnostic comparison rather than a second pristine test.</p>
+  <h3>Leakage checks</h3>
+  <p>Assertions verify page grain, valid counts, exhaustive partitions, disjoint clients, training-only peer aggregation and the feature allowlist. The 44-column audit excludes IDs from learning, current CTR and its component counts from features, trend-derived fields, overlapping 30-day traffic fields, product scores and unvalidated metadata. Deliberately adding rounded CTR drops holdout forest error from 0.385521 to 0.054965 pp; an exact target echo makes it approximately zero. These invalid probes are removed from the final model and are not reported as performance gains.</p>
+</section>
+
+<section id="results">
+  <p class="section-number">04 / Results</p>
+  <h2>The learned models did not earn replacement.</h2>
+  <p>The peer rule has the lowest validation weighted MAE: 0.227870 pp versus 0.260186 for the tree and 0.257381 for the forest. On the original 760-page test pool, the peer rule again has the lowest weighted error. The forest's test page MAE is slightly lower, so the ranking depends on the weighting objective.</p>
+  @@HOLDOUT_TABLE@@
+  <figure>
+    <picture><source media="(max-width: 760px)" srcset="assets/holdout-mobile.svg"><img src="assets/holdout.svg" width="960" height="460" alt="On the same 760 held-out pages, weighted CTR MAE is 0.383436 pp for the peer rule, 0.388038 for the tree and 0.385521 for the forest."></picture>
+    <figcaption><strong>Figure 1.</strong> The peer rule narrowly leads on the declared exposure-weighted objective; the forest's error is 0.54% higher. Differences are descriptive, with no significance claim. <a href="@@SOURCE@@/work/outputs/w05_model_metrics.json">Source: model receipt</a>.</figcaption>
+  </figure>
+  <p>Test target context: pooled observed CTR is 0.597654%, and 11.71% of supported pages have zero clicks. This regression has no classification base rate. Editorial precision@20 and editorial actionability base rate are unavailable for every method because zero independent editorial judgments exist.</p>
+  <h3>Holding out clients changes the apparent benefit of learning.</h3>
+  <p>On the same 11,911-page, 28-client audit pool, forest weighted MAE rises from 0.220839 pp in row-random folds to 0.264557 pp in client-grouped folds: +0.043719 pp, or 19.8%. Row-random folds share clients across training and evaluation; grouped folds do not. The diagnostic shows sensitivity to evaluation design and client mix, not a measured causal effect of “leakage.”</p>
+  @@AUDIT_TABLE@@
+  <figure>
+    <picture><source media="(max-width: 760px)" srcset="assets/split-audit-mobile.svg"><img src="assets/split-audit.svg" width="960" height="520" alt="Row-random audit errors are 0.236621, 0.233558 and 0.220839 pp for pooled CTR, peer rule and forest; grouped errors are 0.250899, 0.258531 and 0.264557 pp respectively."></picture>
+    <figcaption><strong>Figure 2.</strong> The forest leads in row-random evaluation; the pooled training-CTR reference leads after clients are held out. The comparison uses an identical supported pool, and error bars are not fabricated. <a href="@@SOURCE@@/work/outputs/w06_validation_audit_metrics.json">Source: audit receipt</a>.</figcaption>
+  </figure>
+  <p>The naive reference also beats the peer rule on grouped weighted MAE. This does not retroactively alter the original validation selection or prove that a naive benchmark creates a better editorial queue. It requires inclusion of that reference in the next prospective comparison. Equal-client audit MAE favors the forest slightly (0.408535 pp) over the naive reference (0.411826 pp) and peer rule (0.412685 pp); neither weighting alone settles review usefulness.</p>
+  <h3>Errors and interpretation</h3>
+  <p>Grouped forest weighted MAE ranges from 0.221125 to 0.389920 pp across five folds containing 793, 207, 6,154, 1,477 and 3,280 supported pages. Those unequal samples and changing client mix limit the interpretation of a single pooled score. These ranges are fold diagnostics, not confidence intervals or independent replication estimates.</p>
+  <p>In the original holdout, shuffling position increases forest weighted MAE by 0.011956 pp (shuffle SD 0.002477); content type changes it by zero, and update age changes it by −0.004100 pp (SD 0.002967). Freshness therefore has no positive measured contribution in this run. All supported test pages are keyword articles, so zero type importance cannot establish that type is irrelevant in the population. The position 1–3 error slice has only 17 test pages across two clients.</p>
+</section>
+
+<section id="limitations" class="limitations">
+  <p class="section-number">05 / Limitations &amp; honest framing</p>
+  <h2>CTR accuracy does not validate an editorial intervention.</h2>
+  <ul>
+    <li><strong>Concurrent windows:</strong> the main study has no earlier-feature/later-outcome split or reliable export timestamp. It does not establish future CTR performance.</li>
+    <li><strong>Missing decision labels:</strong> actionability, editorial precision@20 and refresh effects are unmeasured. No human review or edit has been completed by this analysis.</li>
+    <li><strong>Selection and scope:</strong> exposure/position and peer-support policies exclude many pages; the evaluation pool is dominated by one content type. Results do not represent the entire warehouse or all clients.</li>
+    <li><strong>Unobserved context:</strong> pooled peers and average position hide query, device, intent and search-result differences. A gap cannot diagnose snippet quality, content decay or its cause.</li>
+    <li><strong>Small, unequal groups:</strong> six clients form the original test; the later grouped audit revisits inspected clients and has unequal folds. There is one seed and no independent repeated study.</li>
+    <li><strong>Policy assumptions:</strong> exposure cutoffs, peer thresholds, review capacity, update-age branches, client caps and effort budgets are declared choices, not learned optimums or validated fairness constraints.</li>
+  </ul>
+  <p><strong>Supported claim:</strong> on this starter slice, the learners do not improve the original declared weighted CTR-error objective, and an interpretable peer-gap queue can be generated for further review research. No recovered-click, revenue, causal-refresh or Google-algorithm claim follows.</p>
+</section>
+
+<section id="recommendations">
+  <p class="section-number">06 / Ranked recommendations</p>
+  <h2>Verify context first, then test whether the queue helps.</h2>
+  <ol class="recommendations">
+    <li><strong>Obtain a current, complete source window.</strong> Confirm source timestamp, counting consistency, position validity, actual update dates and suitable query/device peers before operational use. Unknown freshness currently blocks that use.</li>
+    <li><strong>Allocate a capped human-review batch.</strong> Sort positive peer-gap proxies, then take at most five slots per client up to 20 in total. Preserve canonical ranks separately and leave unfillable slots empty.</li>
+    <li><strong>Observe recent updates before another edit.</strong> This first action-policy branch covers 423 of 493 positive-gap candidates. Use a separate complete post-edit window; inspect measurement now.</li>
+    <li><strong>Investigate stale/declining cases and matched intent.</strong> Six candidates meet the provisional stale-plus-decline rule. Check seasonality, indexing and visibility before proposing a refresh; the other position branches prompt snippet/intent or query-coverage review.</li>
+    <li><strong>Collect independent judgments and run a prospective comparison.</strong> Use blinded review labels and a same-budget control from the supported pool; compare peer, naive-CTR and impressions-only rankings. Only then assess review utility. A separate randomized pilot with controls and later windows is needed to estimate edit effects.</li>
+  </ol>
+  <p>The original test has 821 eligible pages: 760 supported and 61 deferred. Of the supported pages, 493 have a positive gap and 267 do not. The mutually exclusive action branches below are applied in order: recent update (≤30 days), then stale (≥181 days) plus &gt;20% impression decline with previous-window exposure ≥100, then the three position bands. These flags explain proposed review actions; they neither change the canonical priority score nor supply labels.</p>
+  @@ACTION_TABLE@@
+  <figure>
+    <picture><source media="(max-width: 760px)" srcset="assets/allocation-mobile.svg"><img src="assets/allocation.svg" width="960" height="440" alt="Canonical top-20 review slots cover two clients with a 95 percent maximum share; a five-per-client cap covers six clients with a 25 percent maximum share."></picture>
+    <figcaption><strong>Figure 3.</strong> The proposed cap reduces the largest client's share from 19 of 20 to 5 of 20 slots. This is a change in allocation, not proven improvement in accuracy, actionability or fairness. <a href="@@SOURCE@@/work/outputs/w07_action_playbook_metrics.json">Source: playbook receipt</a>.</figcaption>
+  </figure>
+  <p>Budget assumptions are 15 minutes of triage per review and at most four owner-approved pilots at two hours each: 13 hours in total. No costs or value have been measured. An editor records accept/reject/defer privately, an owner approves any edit, and QA and rollback precede a separate observation window. The analysis authorizes no automatic publishing, rewriting, pruning or model promotion.</p>
+  <p>Proposed monitoring checks include source validity and freshness each cycle, a &gt;5 pp fall in supported share, client concentration over 50% in canonical top-20, and utility changes only once at least 100 independent reviews across five clients exist. These are provisional investigation triggers; the full <a href="@@SOURCE@@/work/notebooks/w07_action_playbook.ipynb">playbook</a> describes cadence, owners, drift checks and promotion gates.</p>
+</section>
+
+<section id="reproducibility">
+  <p class="section-number">07 / Reproducibility</p>
+  <h2>Inspect the notebooks or rebuild the paper.</h2>
+  <p>The <a href="@@REPO@@">public repository</a> contains the approved starter input, executed analysis, dependencies and paper source. The capstone runs the model, audit and playbook notebooks in order, checks their aggregate receipts against the input hash, and rebuilds this page and its charts. It requires no warehouse token.</p>
+  <ul class="artifact-links">
+    <li><a href="@@SOURCE@@/work/notebooks/capstone.ipynb">Executed capstone notebook</a> · paper orchestration and assertions</li>
+    <li><a href="@@SOURCE@@/work/notebooks/w05_model.ipynb">Model comparison</a> · <a href="@@SOURCE@@/work/notebooks/w06_validation_audit.ipynb">Validation audit</a> · <a href="@@SOURCE@@/work/notebooks/w07_action_playbook.ipynb">Action playbook</a></li>
+    <li><a href="@@SOURCE@@/work/notebooks/w03_data_contract.ipynb">Separate warehouse data contract</a> · requires approved gated access for a fresh rerun</li>
+    <li><a href="assets/evidence.json">Download aggregate evidence (JSON)</a> · no page/client identifiers</li>
+    <li><a href="@@SOURCE@@/work/paper/index.template.html">Paper source</a> · <a href="@@SOURCE@@/work/scripts/build_paper.py">Builder</a> · <a href="@@SOURCE@@/work/research_page_design.md">Research-page design review</a></li>
+  </ul>
+  <pre><code>git clone https://github.com/orbin123/flyrank-ml-internship.git
+cd flyrank-ml-internship
+python3.11 -m venv .venv
+source .venv/bin/activate
+cd flyrank-ml-internship-starter-main
+pip install -r work/requirements-w05.txt
+python work/scripts/run_capstone.py
+# Preview the generated site from the repository root:
+cd ..
+python -m http.server 8000 --directory docs</code></pre>
+  <p>Visit <code>http://localhost:8000</code> for the preview. To rebuild just the page from committed receipts, run <code>python work/scripts/build_paper.py</code> from the starter directory. Python 3.11 and the pinned <a href="@@SOURCE@@/work/requirements-w05.txt">environment</a> reproduce the executed study; recorded versions are Python 3.11.15, pandas 3.0.6, NumPy 2.4.6 and scikit-learn 1.9.1. Seed 42 is fixed. The audit retrains five forests per protocol; rerunning is reproducibility verification, not independent statistical replication.</p>
+  <details><summary>Input fingerprint and computational scope</summary>
+    <p>Starter input SHA-256: <code class="hash">@@DATA_HASH@@</code>. All three source receipts agree on this fingerprint. The dataset stays in its approved starter location; no new dataset or local queue is committed.</p>
+    <p>The main comparison fits one shallow tree and one 200-tree forest. The audit additionally fits ten cross-validation forests and two deliberately invalid leakage probes; the playbook reconstructs the rule without fitting a model. The build is a CPU-only local run with the forest limited to one worker. Runtime of the capstone rerun is recorded in its executed output; training-only energy use and independent repetition variance are not measured.</p>
+  </details>
+</section>
+
+<section id="acknowledgments">
+  <p class="section-number">08 / Acknowledgments &amp; data credit</p>
+  <h2>Built on the FlyRank ML Internship dataset</h2>
+  <p><a href="https://flyrank.ai">Built on the FlyRank ML Internship dataset</a>. Thanks to FlyRank and the internship teaching team for the approved starter data, warehouse release and technical foundations. Data use follows the repository's <a href="@@SOURCE@@/DATA_USE.md">data-use policy</a>: research/education use, no re-identification and no redistribution of raw warehouse data.</p>
+  <p>Orbin Sunny is responsible for this internship artifact, prepared with AI assistance for code, verification, writing and page design. The analysis uses pandas, NumPy, scikit-learn, Matplotlib and Jupyter. This paper is not a peer-reviewed publication or an operational deployment of an editorial model.</p>
+  <p>The page's communication choices draw on <a href="https://www.nature.com/srep/author-instructions/submission-guidelines">Scientific Reports' manuscript guidance</a>, <a href="https://distill.pub/guide/">Distill's authoring guide</a>, the <a href="https://www.cs.mcgill.ca/~jpineau/ReproducibilityChecklist-v2.0.pdf">ML reproducibility checklist</a>, <a href="https://www.datawrapper.de/academy/annotate-tab">Datawrapper's chart annotations</a> and <a href="https://www.w3.org/WAI/tutorials/images/complex/">W3C's complex-image guidance</a>. These inform presentation; the linked notebooks and receipts supply all project findings.</p>
+</section>
+</article>
+<footer>Orbin Sunny · ML-11 · <a href="#top">Back to top ↑</a> · <a href="@@REPO@@">Repository</a></footer>
+</main>
+</div>
+</body>
+</html>

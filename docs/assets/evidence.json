@@ -1,0 +1,1009 @@
+{
+  "w05_model_metrics.json": {
+    "assignment": "ML-08",
+    "lane": "CTR opportunity scoring; current-snapshot CTR surrogate",
+    "data_sha256": "c43bdac4eccfa17fcd8a33974fe36f2c998c03a3ae3af8d80cf712abab5d6396",
+    "versions": {
+      "python": "3.11.15",
+      "pandas": "3.0.6",
+      "numpy": "2.4.6",
+      "scikit_learn": "1.9.1"
+    },
+    "seed": 42,
+    "features": [
+      "avg_position",
+      "content_type",
+      "days_since_last_update"
+    ],
+    "policy": {
+      "minimum_impressions": 500,
+      "position_range": [
+        1,
+        20
+      ],
+      "position_edges": [
+        0,
+        3,
+        10,
+        20
+      ],
+      "minimum_peer_pages": 30,
+      "minimum_peer_clients": 3,
+      "review_budget": 20
+    },
+    "model_settings": {
+      "tree": {
+        "max_depth": 3,
+        "min_samples_leaf": 100
+      },
+      "forest": {
+        "n_estimators": 200,
+        "max_depth": 6,
+        "min_samples_leaf": 50,
+        "bootstrap": true,
+        "n_jobs": 1
+      }
+    },
+    "split": [
+      {
+        "partition": "train",
+        "pages": 6519,
+        "clients": 16,
+        "evaluation_pages": null,
+        "deferred_pages": null
+      },
+      {
+        "partition": "validation",
+        "pages": 4669,
+        "clients": 6,
+        "evaluation_pages": 4626.0,
+        "deferred_pages": 43.0
+      },
+      {
+        "partition": "test",
+        "pages": 821,
+        "clients": 6,
+        "evaluation_pages": 760.0,
+        "deferred_pages": 61.0
+      }
+    ],
+    "validation_metrics": [
+      {
+        "method": "Week-4 peer rule (train-only)",
+        "pages": 4626,
+        "clients": 6,
+        "weighted_MAE_pp": 0.227869727,
+        "page_MAE_pp": 0.2325348034,
+        "page_RMSE_pp": 0.2919508235,
+        "equal_client_MAE_pp": 0.6573515306
+      },
+      {
+        "method": "shallow tree",
+        "pages": 4626,
+        "clients": 6,
+        "weighted_MAE_pp": 0.2601860993,
+        "page_MAE_pp": 0.2646350579,
+        "page_RMSE_pp": 0.3276704804,
+        "equal_client_MAE_pp": 0.6490810116
+      },
+      {
+        "method": "random forest",
+        "pages": 4626,
+        "clients": 6,
+        "weighted_MAE_pp": 0.2573805723,
+        "page_MAE_pp": 0.2632455147,
+        "page_RMSE_pp": 0.3279886717,
+        "equal_client_MAE_pp": 0.6435864561
+      }
+    ],
+    "selected_on_validation": "Week-4 peer rule (train-only)",
+    "best_learned_challenger": "random forest",
+    "test_metrics": [
+      {
+        "method": "Week-4 peer rule (train-only)",
+        "pages": 760,
+        "clients": 6,
+        "weighted_MAE_pp": 0.3834359486,
+        "page_MAE_pp": 0.3331387344,
+        "page_RMSE_pp": 0.54208938,
+        "equal_client_MAE_pp": 0.4099296722,
+        "observed_pooled_CTR_pct": 0.5976536747,
+        "zero_click_page_rate": 0.1171052632,
+        "editorial_precision_at_20": "unavailable",
+        "editorial_base_rate": "unavailable"
+      },
+      {
+        "method": "shallow tree",
+        "pages": 760,
+        "clients": 6,
+        "weighted_MAE_pp": 0.3880381144,
+        "page_MAE_pp": 0.3324498722,
+        "page_RMSE_pp": 0.5494829745,
+        "equal_client_MAE_pp": 0.4205793489,
+        "observed_pooled_CTR_pct": 0.5976536747,
+        "zero_click_page_rate": 0.1171052632,
+        "editorial_precision_at_20": "unavailable",
+        "editorial_base_rate": "unavailable"
+      },
+      {
+        "method": "random forest",
+        "pages": 760,
+        "clients": 6,
+        "weighted_MAE_pp": 0.3855207364,
+        "page_MAE_pp": 0.3289469864,
+        "page_RMSE_pp": 0.5478570882,
+        "equal_client_MAE_pp": 0.4119847895,
+        "observed_pooled_CTR_pct": 0.5976536747,
+        "zero_click_page_rate": 0.1171052632,
+        "editorial_precision_at_20": "unavailable",
+        "editorial_base_rate": "unavailable"
+      }
+    ],
+    "queue_diagnostics": [
+      {
+        "method": "Week-4 peer rule (train-only)",
+        "K": 20,
+        "filled_review_slots": 20,
+        "clients_in_queue": 2,
+        "largest_client_slot_share": 0.95,
+        "overlap_with_rule": 20,
+        "editorial_precision": "unavailable"
+      },
+      {
+        "method": "Week-4 peer rule (train-only)",
+        "K": 50,
+        "filled_review_slots": 50,
+        "clients_in_queue": 3,
+        "largest_client_slot_share": 0.9,
+        "overlap_with_rule": 50,
+        "editorial_precision": "unavailable"
+      },
+      {
+        "method": "shallow tree",
+        "K": 20,
+        "filled_review_slots": 20,
+        "clients_in_queue": 2,
+        "largest_client_slot_share": 0.95,
+        "overlap_with_rule": 17,
+        "editorial_precision": "unavailable"
+      },
+      {
+        "method": "shallow tree",
+        "K": 50,
+        "filled_review_slots": 50,
+        "clients_in_queue": 3,
+        "largest_client_slot_share": 0.84,
+        "overlap_with_rule": 44,
+        "editorial_precision": "unavailable"
+      },
+      {
+        "method": "random forest",
+        "K": 20,
+        "filled_review_slots": 20,
+        "clients_in_queue": 2,
+        "largest_client_slot_share": 0.95,
+        "overlap_with_rule": 17,
+        "editorial_precision": "unavailable"
+      },
+      {
+        "method": "random forest",
+        "K": 50,
+        "filled_review_slots": 50,
+        "clients_in_queue": 3,
+        "largest_client_slot_share": 0.86,
+        "overlap_with_rule": 41,
+        "editorial_precision": "unavailable"
+      }
+    ],
+    "error_slices": {
+      "position_band": [
+        {
+          "group": "1-3",
+          "n": 17,
+          "clients": 2,
+          "page_MAE_pp": 0.3876431462,
+          "weighted_MAE_pp": 0.5400601092,
+          "mean_signed_error_pp": -0.0217890642,
+          "small_group_caution": true
+        },
+        {
+          "group": ">3-10",
+          "n": 390,
+          "clients": 6,
+          "page_MAE_pp": 0.3811549041,
+          "weighted_MAE_pp": 0.4140331187,
+          "mean_signed_error_pp": -0.134988801,
+          "small_group_caution": false
+        },
+        {
+          "group": ">10-20",
+          "n": 353,
+          "clients": 5,
+          "page_MAE_pp": 0.2684401234,
+          "weighted_MAE_pp": 0.3193743737,
+          "mean_signed_error_pp": 0.0138264278,
+          "small_group_caution": false
+        }
+      ],
+      "content_type": [
+        {
+          "group": "keyword article",
+          "n": 760,
+          "clients": 6,
+          "page_MAE_pp": 0.3289469864,
+          "weighted_MAE_pp": 0.3855207364,
+          "mean_signed_error_pp": -0.063335944,
+          "small_group_caution": false
+        }
+      ],
+      "exposure_band": [
+        {
+          "group": "500-3k",
+          "n": 385,
+          "clients": 6,
+          "page_MAE_pp": 0.3056090895,
+          "weighted_MAE_pp": 0.3052370097,
+          "mean_signed_error_pp": 0.0410157827,
+          "small_group_caution": false
+        },
+        {
+          "group": ">3k-30k",
+          "n": 328,
+          "clients": 6,
+          "page_MAE_pp": 0.3551187533,
+          "weighted_MAE_pp": 0.3904640509,
+          "mean_signed_error_pp": -0.1578338985,
+          "small_group_caution": false
+        },
+        {
+          "group": ">30k",
+          "n": 47,
+          "clients": 2,
+          "page_MAE_pp": 0.3374735976,
+          "weighted_MAE_pp": 0.3950639795,
+          "mean_signed_error_pp": -0.2586569164,
+          "small_group_caution": false
+        }
+      ]
+    },
+    "permutation_importance": [
+      {
+        "feature": "avg_position",
+        "increase_weighted_MAE_pp": 0.0119558144,
+        "shuffle_SD_pp": 0.002476702
+      },
+      {
+        "feature": "content_type",
+        "increase_weighted_MAE_pp": 0.0,
+        "shuffle_SD_pp": 0.0
+      },
+      {
+        "feature": "days_since_last_update",
+        "increase_weighted_MAE_pp": -0.0041002011,
+        "shuffle_SD_pp": 0.0029668668
+      }
+    ],
+    "test_pooled_ctr_pct": 0.5976536746506926,
+    "test_zero_click_page_rate": 0.11710526315789474,
+    "independent_editorial_labels": 0,
+    "editorial_precision_at_20": null,
+    "editorial_base_rate": null,
+    "limitations": [
+      "Same-snapshot, cross-client CTR estimation only",
+      "No temporal validation",
+      "CTR accuracy does not validate editorial queue usefulness",
+      "No causal or recovered-click claim",
+      "Unsupported peer cohorts deferred"
+    ],
+    "verification": "Complete run: grain, units, eligibility, grouping, baseline, feature allowlist and common evaluation pool passed"
+  },
+  "w06_validation_audit_metrics.json": {
+    "assignment": "ML-09",
+    "scope": "same-snapshot starter-slice CTR surrogate; not future or causal",
+    "seed": 42,
+    "versions": {
+      "python": "3.11.15",
+      "pandas": "3.0.6",
+      "numpy": "2.4.6",
+      "scikit_learn": "1.9.1"
+    },
+    "features": [
+      "avg_position",
+      "content_type",
+      "days_since_last_update"
+    ],
+    "data_sha256": "c43bdac4eccfa17fcd8a33974fe36f2c998c03a3ae3af8d80cf712abab5d6396",
+    "paper_findings": [
+      {
+        "finding": "#3 position-tier pooled CTR",
+        "page": 8
+      },
+      {
+        "finding": "ML appendix health-score importance",
+        "page": 27
+      }
+    ],
+    "week5_reproduced": true,
+    "original_selection": "Week-4 peer rule (train-only)",
+    "original_test_metrics": [
+      {
+        "method": "Week-4 peer rule (train-only)",
+        "pages": 760,
+        "clients": 6,
+        "weighted_MAE_pp": 0.3834359486,
+        "page_MAE_pp": 0.3331387344,
+        "page_RMSE_pp": 0.54208938,
+        "equal_client_MAE_pp": 0.4099296722,
+        "observed_pooled_CTR_pct": 0.5976536747,
+        "zero_click_page_rate": 0.1171052632,
+        "editorial_precision_at_20": "unavailable",
+        "editorial_base_rate": "unavailable"
+      },
+      {
+        "method": "shallow tree",
+        "pages": 760,
+        "clients": 6,
+        "weighted_MAE_pp": 0.3880381144,
+        "page_MAE_pp": 0.3324498722,
+        "page_RMSE_pp": 0.5494829745,
+        "equal_client_MAE_pp": 0.4205793489,
+        "observed_pooled_CTR_pct": 0.5976536747,
+        "zero_click_page_rate": 0.1171052632,
+        "editorial_precision_at_20": "unavailable",
+        "editorial_base_rate": "unavailable"
+      },
+      {
+        "method": "random forest",
+        "pages": 760,
+        "clients": 6,
+        "weighted_MAE_pp": 0.3855207364,
+        "page_MAE_pp": 0.3289469864,
+        "page_RMSE_pp": 0.5478570882,
+        "equal_client_MAE_pp": 0.4119847895,
+        "observed_pooled_CTR_pct": 0.5976536747,
+        "zero_click_page_rate": 0.1171052632,
+        "editorial_precision_at_20": "unavailable",
+        "editorial_base_rate": "unavailable"
+      }
+    ],
+    "oof_coverage": [
+      {
+        "protocol": "random",
+        "supported_pages": 11918,
+        "deferred_pages": 91
+      },
+      {
+        "protocol": "grouped",
+        "supported_pages": 11911,
+        "deferred_pages": 98
+      }
+    ],
+    "common_oof_pages": 11911,
+    "common_oof_clients": 28,
+    "random_fold_structure": [
+      {
+        "fold": 1,
+        "train_pages": 9607,
+        "heldout_pages": 2402,
+        "heldout_clients": 27,
+        "overlap_clients": 27,
+        "supported_pages": 2395
+      },
+      {
+        "fold": 2,
+        "train_pages": 9607,
+        "heldout_pages": 2402,
+        "heldout_clients": 26,
+        "overlap_clients": 26,
+        "supported_pages": 2379
+      },
+      {
+        "fold": 3,
+        "train_pages": 9607,
+        "heldout_pages": 2402,
+        "heldout_clients": 26,
+        "overlap_clients": 26,
+        "supported_pages": 2379
+      },
+      {
+        "fold": 4,
+        "train_pages": 9607,
+        "heldout_pages": 2402,
+        "heldout_clients": 26,
+        "overlap_clients": 26,
+        "supported_pages": 2379
+      },
+      {
+        "fold": 5,
+        "train_pages": 9608,
+        "heldout_pages": 2401,
+        "heldout_clients": 26,
+        "overlap_clients": 26,
+        "supported_pages": 2386
+      }
+    ],
+    "grouped_fold_structure": [
+      {
+        "fold": 1,
+        "train_pages": 11188,
+        "heldout_pages": 821,
+        "heldout_clients": 6,
+        "overlap_clients": 0,
+        "supported_pages": 793
+      },
+      {
+        "fold": 2,
+        "train_pages": 11734,
+        "heldout_pages": 275,
+        "heldout_clients": 6,
+        "overlap_clients": 0,
+        "supported_pages": 207
+      },
+      {
+        "fold": 3,
+        "train_pages": 5854,
+        "heldout_pages": 6155,
+        "heldout_clients": 6,
+        "overlap_clients": 0,
+        "supported_pages": 6154
+      },
+      {
+        "fold": 4,
+        "train_pages": 10531,
+        "heldout_pages": 1478,
+        "heldout_clients": 5,
+        "overlap_clients": 0,
+        "supported_pages": 1477
+      },
+      {
+        "fold": 5,
+        "train_pages": 8729,
+        "heldout_pages": 3280,
+        "heldout_clients": 5,
+        "overlap_clients": 0,
+        "supported_pages": 3280
+      }
+    ],
+    "before_after_coverage": [
+      {
+        "stage": "Before: original Week-5 single client test",
+        "pages": 760,
+        "clients": 6,
+        "forest_weighted_MAE_pp": 0.3855207364,
+        "peer_weighted_MAE_pp": 0.3834359486
+      },
+      {
+        "stage": "After: broader grouped OOF audit",
+        "pages": 11911,
+        "clients": 28,
+        "forest_weighted_MAE_pp": 0.2645573203,
+        "peer_weighted_MAE_pp": 0.2585305981
+      }
+    ],
+    "oof_comparison": [
+      {
+        "method": "naive training pooled CTR",
+        "pages": 11911,
+        "clients": 28,
+        "weighted_MAE_pp": 0.2366209858,
+        "page_MAE_pp": 0.2473889598,
+        "page_RMSE_pp": 0.3427930021,
+        "equal_client_MAE_pp": 0.4092077338,
+        "protocol": "random row OOF (counterfactual)",
+        "observed_pooled_CTR_pct": 0.3582299566,
+        "zero_click_page_rate": 0.0983964403,
+        "editorial_base_rate": "unavailable"
+      },
+      {
+        "method": "training-only peer rule",
+        "pages": 11911,
+        "clients": 28,
+        "weighted_MAE_pp": 0.2335581422,
+        "page_MAE_pp": 0.2464737653,
+        "page_RMSE_pp": 0.3431515693,
+        "equal_client_MAE_pp": 0.4099907103,
+        "protocol": "random row OOF (counterfactual)",
+        "observed_pooled_CTR_pct": 0.3582299566,
+        "zero_click_page_rate": 0.0983964403,
+        "editorial_base_rate": "unavailable"
+      },
+      {
+        "method": "frozen Week-5 forest",
+        "pages": 11911,
+        "clients": 28,
+        "weighted_MAE_pp": 0.2208385675,
+        "page_MAE_pp": 0.2367003966,
+        "page_RMSE_pp": 0.3421539505,
+        "equal_client_MAE_pp": 0.4018634879,
+        "protocol": "random row OOF (counterfactual)",
+        "observed_pooled_CTR_pct": 0.3582299566,
+        "zero_click_page_rate": 0.0983964403,
+        "editorial_base_rate": "unavailable"
+      },
+      {
+        "method": "naive training pooled CTR",
+        "pages": 11911,
+        "clients": 28,
+        "weighted_MAE_pp": 0.2508988056,
+        "page_MAE_pp": 0.2621530914,
+        "page_RMSE_pp": 0.3535406919,
+        "equal_client_MAE_pp": 0.4118264153,
+        "protocol": "grouped client OOF (honest)",
+        "observed_pooled_CTR_pct": 0.3582299566,
+        "zero_click_page_rate": 0.0983964403,
+        "editorial_base_rate": "unavailable"
+      },
+      {
+        "method": "training-only peer rule",
+        "pages": 11911,
+        "clients": 28,
+        "weighted_MAE_pp": 0.2585305981,
+        "page_MAE_pp": 0.2634365105,
+        "page_RMSE_pp": 0.3574564822,
+        "equal_client_MAE_pp": 0.4126851588,
+        "protocol": "grouped client OOF (honest)",
+        "observed_pooled_CTR_pct": 0.3582299566,
+        "zero_click_page_rate": 0.0983964403,
+        "editorial_base_rate": "unavailable"
+      },
+      {
+        "method": "frozen Week-5 forest",
+        "pages": 11911,
+        "clients": 28,
+        "weighted_MAE_pp": 0.2645573203,
+        "page_MAE_pp": 0.268367517,
+        "page_RMSE_pp": 0.3718630367,
+        "equal_client_MAE_pp": 0.4085351025,
+        "protocol": "grouped client OOF (honest)",
+        "observed_pooled_CTR_pct": 0.3582299566,
+        "zero_click_page_rate": 0.0983964403,
+        "editorial_base_rate": "unavailable"
+      }
+    ],
+    "honest_fold_metrics": [
+      {
+        "fold": 1,
+        "method": "forest",
+        "pages": 793,
+        "clients": 6,
+        "weighted_MAE_pp": 0.3899204488,
+        "page_MAE_pp": 0.3203701381,
+        "page_RMSE_pp": 0.5518915088,
+        "equal_client_MAE_pp": 0.4328289631,
+        "naive_weighted_MAE_pp": 0.3892152198,
+        "peer_weighted_MAE_pp": 0.3911194643,
+        "observed_pooled_CTR_pct": 0.5961245586,
+        "zero_click_page_rate": 0.1235813367,
+        "editorial_base_rate": "unavailable"
+      },
+      {
+        "fold": 2,
+        "method": "forest",
+        "pages": 207,
+        "clients": 6,
+        "weighted_MAE_pp": 0.2911562498,
+        "page_MAE_pp": 0.29324691,
+        "page_RMSE_pp": 0.5082844418,
+        "equal_client_MAE_pp": 0.6840692374,
+        "naive_weighted_MAE_pp": 0.2729133177,
+        "peer_weighted_MAE_pp": 0.2955505063,
+        "observed_pooled_CTR_pct": 0.2584748905,
+        "zero_click_page_rate": 0.1352657005,
+        "editorial_base_rate": "unavailable"
+      },
+      {
+        "fold": 3,
+        "method": "forest",
+        "pages": 6154,
+        "clients": 6,
+        "weighted_MAE_pp": 0.2508207433,
+        "page_MAE_pp": 0.2664898792,
+        "page_RMSE_pp": 0.3240402394,
+        "equal_client_MAE_pp": 0.3309683647,
+        "naive_weighted_MAE_pp": 0.2321861196,
+        "peer_weighted_MAE_pp": 0.2418499805,
+        "observed_pooled_CTR_pct": 0.3165223561,
+        "zero_click_page_rate": 0.0996100097,
+        "editorial_base_rate": "unavailable"
+      },
+      {
+        "fold": 4,
+        "method": "forest",
+        "pages": 1477,
+        "clients": 5,
+        "weighted_MAE_pp": 0.2211246879,
+        "page_MAE_pp": 0.2583744676,
+        "page_RMSE_pp": 0.338653326,
+        "equal_client_MAE_pp": 0.3000435985,
+        "naive_weighted_MAE_pp": 0.2193869006,
+        "peer_weighted_MAE_pp": 0.2180353302,
+        "observed_pooled_CTR_pct": 0.2824052253,
+        "zero_click_page_rate": 0.0900473934,
+        "editorial_base_rate": "unavailable"
+      },
+      {
+        "fold": 5,
+        "method": "forest",
+        "pages": 3280,
+        "clients": 5,
+        "weighted_MAE_pp": 0.281146414,
+        "page_MAE_pp": 0.2622475793,
+        "page_RMSE_pp": 0.4044304215,
+        "equal_client_MAE_pp": 0.2503130971,
+        "naive_weighted_MAE_pp": 0.2723013094,
+        "peer_weighted_MAE_pp": 0.2786311878,
+        "observed_pooled_CTR_pct": 0.4298088512,
+        "zero_click_page_rate": 0.0914634146,
+        "editorial_base_rate": "unavailable"
+      }
+    ],
+    "random_to_grouped_weighted_mae_gap_pp": 0.043718752764083935,
+    "leak_probe_metrics": [
+      {
+        "method": "clean frozen forest",
+        "pages": 760,
+        "clients": 6,
+        "weighted_MAE_pp": 0.3855207364,
+        "page_MAE_pp": 0.3289469864,
+        "page_RMSE_pp": 0.5478570882,
+        "equal_client_MAE_pp": 0.4119847895,
+        "observed_pooled_CTR_pct": 0.5976536747,
+        "zero_click_page_rate": 0.1171052632,
+        "editorial_base_rate": "unavailable"
+      },
+      {
+        "method": "FORBIDDEN rounded CTR input",
+        "pages": 760,
+        "clients": 6,
+        "weighted_MAE_pp": 0.0549647815,
+        "page_MAE_pp": 0.0371725284,
+        "page_RMSE_pp": 0.2306562138,
+        "equal_client_MAE_pp": 0.0941146256,
+        "observed_pooled_CTR_pct": 0.5976536747,
+        "zero_click_page_rate": 0.1171052632,
+        "editorial_base_rate": "unavailable"
+      },
+      {
+        "method": "FORBIDDEN exact target echo",
+        "pages": 760,
+        "clients": 6,
+        "weighted_MAE_pp": 5.12354086e-16,
+        "page_MAE_pp": 3.787825773e-16,
+        "page_RMSE_pp": 7.070051362e-16,
+        "equal_client_MAE_pp": 5.243577e-16,
+        "observed_pooled_CTR_pct": 0.5976536747,
+        "zero_click_page_rate": 0.1171052632,
+        "editorial_base_rate": "unavailable"
+      }
+    ],
+    "leak_probes_removed": true,
+    "audited_raw_columns": 44,
+    "grouped_error_slices": [
+      {
+        "method": "1-3",
+        "pages": 463,
+        "clients": 15,
+        "weighted_MAE_pp": 0.3382382905,
+        "page_MAE_pp": 0.3272668182,
+        "page_RMSE_pp": 0.3998954294,
+        "equal_client_MAE_pp": 0.3670352399,
+        "small_sample_caution": false,
+        "observed_pooled_CTR_pct": 0.4921513765,
+        "zero_click_page_rate": 0.1187904968,
+        "editorial_base_rate": "unavailable"
+      },
+      {
+        "method": ">3-10",
+        "pages": 7034,
+        "clients": 28,
+        "weighted_MAE_pp": 0.2614219235,
+        "page_MAE_pp": 0.276378271,
+        "page_RMSE_pp": 0.3840253407,
+        "equal_client_MAE_pp": 0.3871192825,
+        "small_sample_caution": false,
+        "observed_pooled_CTR_pct": 0.3487470724,
+        "zero_click_page_rate": 0.0652544782,
+        "editorial_base_rate": "unavailable"
+      },
+      {
+        "method": ">10-20",
+        "pages": 4414,
+        "clients": 25,
+        "weighted_MAE_pp": 0.2525021362,
+        "page_MAE_pp": 0.2494236973,
+        "page_RMSE_pp": 0.3483713918,
+        "equal_client_MAE_pp": 0.362469186,
+        "small_sample_caution": false,
+        "observed_pooled_CTR_pct": 0.351386212,
+        "zero_click_page_rate": 0.1490711373,
+        "editorial_base_rate": "unavailable"
+      }
+    ],
+    "original_holdout_permutation_importance": [
+      {
+        "feature": "avg_position",
+        "increase_weighted_MAE_pp": 0.0119558144,
+        "shuffle_SD_pp": 0.002476702
+      },
+      {
+        "feature": "content_type",
+        "increase_weighted_MAE_pp": 0.0,
+        "shuffle_SD_pp": 0.0
+      },
+      {
+        "feature": "days_since_last_update",
+        "increase_weighted_MAE_pp": -0.0041002011,
+        "shuffle_SD_pp": 0.0029668668
+      }
+    ],
+    "anonymized_cases_shown": 4,
+    "grouped_top20_clients": 5,
+    "grouped_top20_largest_client_slot_share": 0.6,
+    "independent_editorial_labels": 0,
+    "editorial_precision_at_20": null,
+    "limitations": [
+      "Concurrent feature/target window",
+      "No temporal validation",
+      "No causal effect",
+      "No independent editorial labels",
+      "OOF audit revisits previously inspected clients",
+      "Unequal group fold sizes; client mix and exposure concentration",
+      "Unsupported cohorts deferred"
+    ],
+    "verification": "All assertions passed; clean frozen models, training-only peers, disjoint client OOF and matched evaluation pool"
+  },
+  "w07_action_playbook_metrics.json": {
+    "assignment": "ML-10",
+    "scope": "offline held-out starter-slice CTR review playbook; non-production",
+    "versions": {
+      "python": "3.11.15",
+      "pandas": "3.0.6",
+      "numpy": "2.4.6",
+      "scikit_learn": "1.9.1"
+    },
+    "data_sha256": "c43bdac4eccfa17fcd8a33974fe36f2c998c03a3ae3af8d80cf712abab5d6396",
+    "seed": 42,
+    "source_receipts": {
+      "work/outputs/w05_model_metrics.json": "c1bb9ce4d40022884011557b4a9fde3c5106f9c4f97d9529e662a96cc8344d31",
+      "work/outputs/w06_validation_audit_metrics.json": "d370618eb80a003704bdf77151c1b6c318dc5441a56f75ad6b3e9d5c5b50e4ab"
+    },
+    "selected_method": "Week-4 peer rule (train-only)",
+    "score_inputs": [
+      "impressions_90d",
+      "clicks_90d",
+      "avg_position",
+      "content_type"
+    ],
+    "action_context_only": [
+      "days_since_last_update",
+      "impressions_prev_30d",
+      "impressions_last_30d"
+    ],
+    "policy": {
+      "minimum_impressions": 500,
+      "position_edges": [
+        0,
+        3,
+        10,
+        20
+      ],
+      "minimum_training_peer_pages": 30,
+      "minimum_training_peer_clients": 3,
+      "review_budget": 20,
+      "client_cap": 5,
+      "stale_days": 181,
+      "recent_update_days": 30,
+      "minimum_previous_30d_impressions": 100,
+      "decline_threshold_pct": -20
+    },
+    "split": [
+      {
+        "partition": "train",
+        "pages": 6519,
+        "clients": 16
+      },
+      {
+        "partition": "validation",
+        "pages": 4669,
+        "clients": 6
+      },
+      {
+        "partition": "test",
+        "pages": 821,
+        "clients": 6
+      }
+    ],
+    "test_supported_pages": 760,
+    "test_deferred_pages": 61,
+    "test_nonpositive_gap_pages": 267,
+    "positive_gap_candidates": 493,
+    "reproduced_peer_test_weighted_MAE_pp": 0.38343594859252395,
+    "archetype_summary": [
+      {
+        "archetype": "page_one_low_capture",
+        "pages": 30,
+        "clients": 2,
+        "median_priority_proxy": 4.2981620977
+      },
+      {
+        "archetype": "recent_update_observe",
+        "pages": 423,
+        "clients": 5,
+        "median_priority_proxy": 4.2107670462
+      },
+      {
+        "archetype": "stale_and_observed_decline",
+        "pages": 6,
+        "clients": 2,
+        "median_priority_proxy": 2.9858895615
+      },
+      {
+        "archetype": "striking_distance_low_capture",
+        "pages": 33,
+        "clients": 4,
+        "median_priority_proxy": 3.7839329117
+      },
+      {
+        "archetype": "top_visibility_low_capture",
+        "pages": 1,
+        "clients": 1,
+        "median_priority_proxy": 3.4467480382
+      }
+    ],
+    "decay_context_summary": [
+      {
+        "context": "all positive-gap candidates",
+        "pages": 493
+      },
+      {
+        "context": "trend denominator assessable (previous >=100)",
+        "pages": 469
+      },
+      {
+        "context": "observed >20% impression decline",
+        "pages": 425
+      },
+      {
+        "context": "stale and observed decline (before recent-update precedence)",
+        "pages": 6
+      },
+      {
+        "context": "recent update: observe",
+        "pages": 423
+      }
+    ],
+    "allocation": [
+      {
+        "queue": "canonical top-20",
+        "filled_slots": 20,
+        "clients": 2,
+        "largest_client_slot_share": 0.95,
+        "editorial_precision": "unavailable"
+      },
+      {
+        "queue": "review batch: max 5/client",
+        "filled_slots": 20,
+        "clients": 6,
+        "largest_client_slot_share": 0.25,
+        "editorial_precision": "unavailable"
+      }
+    ],
+    "freshness_permutation_evidence": {
+      "feature": "days_since_last_update",
+      "increase_weighted_MAE_pp": -0.0041002011,
+      "shuffle_SD_pp": 0.0029668668
+    },
+    "cost_assumptions": {
+      "triage_minutes_per_slot": 15,
+      "maximum_pilots": 4,
+      "hours_per_pilot": 2,
+      "current_planned_hours": 13.0,
+      "actual_cost_or_value_measured": false
+    },
+    "cost_scenarios": [
+      {
+        "assumed_labor_USD_per_hour": 15,
+        "planned_hours": 13.0,
+        "labor_cost_USD": 195.0,
+        "assumed_USD_per_attributable_click": 0.1,
+        "break_even_incremental_clicks": 1950
+      },
+      {
+        "assumed_labor_USD_per_hour": 15,
+        "planned_hours": 13.0,
+        "labor_cost_USD": 195.0,
+        "assumed_USD_per_attributable_click": 0.5,
+        "break_even_incremental_clicks": 390
+      },
+      {
+        "assumed_labor_USD_per_hour": 15,
+        "planned_hours": 13.0,
+        "labor_cost_USD": 195.0,
+        "assumed_USD_per_attributable_click": 1.0,
+        "break_even_incremental_clicks": 195
+      },
+      {
+        "assumed_labor_USD_per_hour": 30,
+        "planned_hours": 13.0,
+        "labor_cost_USD": 390.0,
+        "assumed_USD_per_attributable_click": 0.1,
+        "break_even_incremental_clicks": 3900
+      },
+      {
+        "assumed_labor_USD_per_hour": 30,
+        "planned_hours": 13.0,
+        "labor_cost_USD": 390.0,
+        "assumed_USD_per_attributable_click": 0.5,
+        "break_even_incremental_clicks": 780
+      },
+      {
+        "assumed_labor_USD_per_hour": 30,
+        "planned_hours": 13.0,
+        "labor_cost_USD": 390.0,
+        "assumed_USD_per_attributable_click": 1.0,
+        "break_even_incremental_clicks": 390
+      },
+      {
+        "assumed_labor_USD_per_hour": 60,
+        "planned_hours": 13.0,
+        "labor_cost_USD": 780.0,
+        "assumed_USD_per_attributable_click": 0.1,
+        "break_even_incremental_clicks": 7800
+      },
+      {
+        "assumed_labor_USD_per_hour": 60,
+        "planned_hours": 13.0,
+        "labor_cost_USD": 780.0,
+        "assumed_USD_per_attributable_click": 0.5,
+        "break_even_incremental_clicks": 1560
+      },
+      {
+        "assumed_labor_USD_per_hour": 60,
+        "planned_hours": 13.0,
+        "labor_cost_USD": 780.0,
+        "assumed_USD_per_attributable_click": 1.0,
+        "break_even_incremental_clicks": 780
+      }
+    ],
+    "monitoring_baseline": {
+      "eligible_test_pages": 821,
+      "supported_share": 0.925700365408039,
+      "position_mix": {
+        ">3-10": 0.5152253349573691,
+        ">10-20": 0.46163215590742995,
+        "1-3": 0.023142509135200974
+      },
+      "type_mix": {
+        "keyword article": 0.925700365408039,
+        "feedly article": 0.07429963459196103
+      },
+      "peer_weighted_MAE_pp": 0.38343594859252395,
+      "canonical_top20_max_client_share": 0.95,
+      "source_export_timestamp": null,
+      "independent_review_count": 0,
+      "editorial_actionability": null
+    },
+    "initial_alerts": [
+      "FRESHNESS_UNKNOWN: source timestamp required before operational use",
+      "CONCENTRATION: use capped human-review allocation"
+    ],
+    "independent_editorial_labels": 0,
+    "editorial_precision_at_20": null,
+    "editorial_base_rate": null,
+    "refresh_effect": null,
+    "expected_recovered_clicks": null,
+    "human_reviews_completed": 0,
+    "edits_performed": 0,
+    "automated_edits_allowed": false,
+    "limitations": [
+      "Concurrent windows",
+      "Unknown source timestamp",
+      "No temporal or causal validation",
+      "No independent editorial outcome",
+      "Unsupported peers deferred",
+      "Broad pooled peers and client concentration",
+      "OOF audit reuses inspected clients; naive CTR reference has lower grouped weighted MAE"
+    ],
+    "verification": "training-only peer reconstruction, held-out metric, action mapping, capacity cap and export round-trips passed"
+  }
+}

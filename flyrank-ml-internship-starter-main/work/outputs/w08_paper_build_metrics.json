@@ -1,0 +1,32 @@
+{
+  "assignment": "ML-11",
+  "paper_url": "https://orbin123.github.io/flyrank-ml-internship/",
+  "input_sha256": "c43bdac4eccfa17fcd8a33974fe36f2c998c03a3ae3af8d80cf712abab5d6396",
+  "source_receipt_sha256": {
+    "w05_model_metrics.json": "c1bb9ce4d40022884011557b4a9fde3c5106f9c4f97d9529e662a96cc8344d31",
+    "w06_validation_audit_metrics.json": "d370618eb80a003704bdf77151c1b6c318dc5441a56f75ad6b3e9d5c5b50e4ab",
+    "w07_action_playbook_metrics.json": "2fb3fed8b026dae08be01dc2e338c1c2258a0efe4f766da15218b84568e3fe86"
+  },
+  "published_file_sha256": {
+    ".nojekyll": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "assets/allocation-mobile.svg": "177dbd87d7238b86774fd294baf41fd5e22ad012c8144ef28af65a03dec6a653",
+    "assets/allocation.svg": "55fb6e0d2e18c02654f8354d3f18dc9ce90083760c23154f702d931bfadcda8a",
+    "assets/evidence.json": "a923223470eef73db1d95c006cbcaf8b7ba71b49583aeb772f2f306da10c320e",
+    "assets/holdout-mobile.svg": "c50abed014ccdd3627bddc7ee1259a5023c7a32678799eff41f5bbdf318390cf",
+    "assets/holdout.svg": "307c77690741de7fbd51def522b04e2e5da234f2cb77eef10af40614ed8d1376",
+    "assets/split-audit-mobile.svg": "62fe98c559c249182711ccf09d241a1dfac77c99711ab1adcfa26b1b0c073b44",
+    "assets/split-audit.svg": "5c058d5eee7a5848727002eb6c7b55a00be737d5deb9d6293c42758f25bb18f4",
+    "index.html": "83e0cf28dead35af900279a725cd406e0e76c6393c39ea3d09de6057ce8bdf5f",
+    "styles.css": "3a4eae9ebe577760092d650af51c3c705bb90f1c36f3c01a78afae65399c7b98"
+  },
+  "checks": {
+    "required_sections": 9,
+    "figures": 3,
+    "mobile_figure_variants": 3,
+    "local_assets_and_anchors": "pass",
+    "aggregate_only_evidence": "pass",
+    "paper_url_format": "pass",
+    "sensitive_content_scan": "pass"
+  },
+  "scope": "static build checks; deployment and portal submission verified externally"
+}

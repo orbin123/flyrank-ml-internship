@@ -1,0 +1,298 @@
+{
+  "assignment": "ML-08",
+  "lane": "CTR opportunity scoring; current-snapshot CTR surrogate",
+  "data_sha256": "c43bdac4eccfa17fcd8a33974fe36f2c998c03a3ae3af8d80cf712abab5d6396",
+  "versions": {
+    "python": "3.11.15",
+    "pandas": "3.0.6",
+    "numpy": "2.4.6",
+    "scikit_learn": "1.9.1"
+  },
+  "seed": 42,
+  "features": [
+    "avg_position",
+    "content_type",
+    "days_since_last_update"
+  ],
+  "policy": {
+    "minimum_impressions": 500,
+    "position_range": [
+      1,
+      20
+    ],
+    "position_edges": [
+      0,
+      3,
+      10,
+      20
+    ],
+    "minimum_peer_pages": 30,
+    "minimum_peer_clients": 3,
+    "review_budget": 20
+  },
+  "model_settings": {
+    "tree": {
+      "max_depth": 3,
+      "min_samples_leaf": 100
+    },
+    "forest": {
+      "n_estimators": 200,
+      "max_depth": 6,
+      "min_samples_leaf": 50,
+      "bootstrap": true,
+      "n_jobs": 1
+    }
+  },
+  "split": [
+    {
+      "partition": "train",
+      "pages": 6519,
+      "clients": 16,
+      "evaluation_pages": null,
+      "deferred_pages": null
+    },
+    {
+      "partition": "validation",
+      "pages": 4669,
+      "clients": 6,
+      "evaluation_pages": 4626.0,
+      "deferred_pages": 43.0
+    },
+    {
+      "partition": "test",
+      "pages": 821,
+      "clients": 6,
+      "evaluation_pages": 760.0,
+      "deferred_pages": 61.0
+    }
+  ],
+  "validation_metrics": [
+    {
+      "method": "Week-4 peer rule (train-only)",
+      "pages": 4626,
+      "clients": 6,
+      "weighted_MAE_pp": 0.227869727,
+      "page_MAE_pp": 0.2325348034,
+      "page_RMSE_pp": 0.2919508235,
+      "equal_client_MAE_pp": 0.6573515306
+    },
+    {
+      "method": "shallow tree",
+      "pages": 4626,
+      "clients": 6,
+      "weighted_MAE_pp": 0.2601860993,
+      "page_MAE_pp": 0.2646350579,
+      "page_RMSE_pp": 0.3276704804,
+      "equal_client_MAE_pp": 0.6490810116
+    },
+    {
+      "method": "random forest",
+      "pages": 4626,
+      "clients": 6,
+      "weighted_MAE_pp": 0.2573805723,
+      "page_MAE_pp": 0.2632455147,
+      "page_RMSE_pp": 0.3279886717,
+      "equal_client_MAE_pp": 0.6435864561
+    }
+  ],
+  "selected_on_validation": "Week-4 peer rule (train-only)",
+  "best_learned_challenger": "random forest",
+  "test_metrics": [
+    {
+      "method": "Week-4 peer rule (train-only)",
+      "pages": 760,
+      "clients": 6,
+      "weighted_MAE_pp": 0.3834359486,
+      "page_MAE_pp": 0.3331387344,
+      "page_RMSE_pp": 0.54208938,
+      "equal_client_MAE_pp": 0.4099296722,
+      "observed_pooled_CTR_pct": 0.5976536747,
+      "zero_click_page_rate": 0.1171052632,
+      "editorial_precision_at_20": "unavailable",
+      "editorial_base_rate": "unavailable"
+    },
+    {
+      "method": "shallow tree",
+      "pages": 760,
+      "clients": 6,
+      "weighted_MAE_pp": 0.3880381144,
+      "page_MAE_pp": 0.3324498722,
+      "page_RMSE_pp": 0.5494829745,
+      "equal_client_MAE_pp": 0.4205793489,
+      "observed_pooled_CTR_pct": 0.5976536747,
+      "zero_click_page_rate": 0.1171052632,
+      "editorial_precision_at_20": "unavailable",
+      "editorial_base_rate": "unavailable"
+    },
+    {
+      "method": "random forest",
+      "pages": 760,
+      "clients": 6,
+      "weighted_MAE_pp": 0.3855207364,
+      "page_MAE_pp": 0.3289469864,
+      "page_RMSE_pp": 0.5478570882,
+      "equal_client_MAE_pp": 0.4119847895,
+      "observed_pooled_CTR_pct": 0.5976536747,
+      "zero_click_page_rate": 0.1171052632,
+      "editorial_precision_at_20": "unavailable",
+      "editorial_base_rate": "unavailable"
+    }
+  ],
+  "queue_diagnostics": [
+    {
+      "method": "Week-4 peer rule (train-only)",
+      "K": 20,
+      "filled_review_slots": 20,
+      "clients_in_queue": 2,
+      "largest_client_slot_share": 0.95,
+      "overlap_with_rule": 20,
+      "editorial_precision": "unavailable"
+    },
+    {
+      "method": "Week-4 peer rule (train-only)",
+      "K": 50,
+      "filled_review_slots": 50,
+      "clients_in_queue": 3,
+      "largest_client_slot_share": 0.9,
+      "overlap_with_rule": 50,
+      "editorial_precision": "unavailable"
+    },
+    {
+      "method": "shallow tree",
+      "K": 20,
+      "filled_review_slots": 20,
+      "clients_in_queue": 2,
+      "largest_client_slot_share": 0.95,
+      "overlap_with_rule": 17,
+      "editorial_precision": "unavailable"
+    },
+    {
+      "method": "shallow tree",
+      "K": 50,
+      "filled_review_slots": 50,
+      "clients_in_queue": 3,
+      "largest_client_slot_share": 0.84,
+      "overlap_with_rule": 44,
+      "editorial_precision": "unavailable"
+    },
+    {
+      "method": "random forest",
+      "K": 20,
+      "filled_review_slots": 20,
+      "clients_in_queue": 2,
+      "largest_client_slot_share": 0.95,
+      "overlap_with_rule": 17,
+      "editorial_precision": "unavailable"
+    },
+    {
+      "method": "random forest",
+      "K": 50,
+      "filled_review_slots": 50,
+      "clients_in_queue": 3,
+      "largest_client_slot_share": 0.86,
+      "overlap_with_rule": 41,
+      "editorial_precision": "unavailable"
+    }
+  ],
+  "error_slices": {
+    "position_band": [
+      {
+        "group": "1-3",
+        "n": 17,
+        "clients": 2,
+        "page_MAE_pp": 0.3876431462,
+        "weighted_MAE_pp": 0.5400601092,
+        "mean_signed_error_pp": -0.0217890642,
+        "small_group_caution": true
+      },
+      {
+        "group": ">3-10",
+        "n": 390,
+        "clients": 6,
+        "page_MAE_pp": 0.3811549041,
+        "weighted_MAE_pp": 0.4140331187,
+        "mean_signed_error_pp": -0.134988801,
+        "small_group_caution": false
+      },
+      {
+        "group": ">10-20",
+        "n": 353,
+        "clients": 5,
+        "page_MAE_pp": 0.2684401234,
+        "weighted_MAE_pp": 0.3193743737,
+        "mean_signed_error_pp": 0.0138264278,
+        "small_group_caution": false
+      }
+    ],
+    "content_type": [
+      {
+        "group": "keyword article",
+        "n": 760,
+        "clients": 6,
+        "page_MAE_pp": 0.3289469864,
+        "weighted_MAE_pp": 0.3855207364,
+        "mean_signed_error_pp": -0.063335944,
+        "small_group_caution": false
+      }
+    ],
+    "exposure_band": [
+      {
+        "group": "500-3k",
+        "n": 385,
+        "clients": 6,
+        "page_MAE_pp": 0.3056090895,
+        "weighted_MAE_pp": 0.3052370097,
+        "mean_signed_error_pp": 0.0410157827,
+        "small_group_caution": false
+      },
+      {
+        "group": ">3k-30k",
+        "n": 328,
+        "clients": 6,
+        "page_MAE_pp": 0.3551187533,
+        "weighted_MAE_pp": 0.3904640509,
+        "mean_signed_error_pp": -0.1578338985,
+        "small_group_caution": false
+      },
+      {
+        "group": ">30k",
+        "n": 47,
+        "clients": 2,
+        "page_MAE_pp": 0.3374735976,
+        "weighted_MAE_pp": 0.3950639795,
+        "mean_signed_error_pp": -0.2586569164,
+        "small_group_caution": false
+      }
+    ]
+  },
+  "permutation_importance": [
+    {
+      "feature": "avg_position",
+      "increase_weighted_MAE_pp": 0.0119558144,
+      "shuffle_SD_pp": 0.002476702
+    },
+    {
+      "feature": "content_type",
+      "increase_weighted_MAE_pp": 0.0,
+      "shuffle_SD_pp": 0.0
+    },
+    {
+      "feature": "days_since_last_update",
+      "increase_weighted_MAE_pp": -0.0041002011,
+      "shuffle_SD_pp": 0.0029668668
+    }
+  ],
+  "test_pooled_ctr_pct": 0.5976536746506926,
+  "test_zero_click_page_rate": 0.11710526315789474,
+  "independent_editorial_labels": 0,
+  "editorial_precision_at_20": null,
+  "editorial_base_rate": null,
+  "limitations": [
+    "Same-snapshot, cross-client CTR estimation only",
+    "No temporal validation",
+    "CTR accuracy does not validate editorial queue usefulness",
+    "No causal or recovered-click claim",
+    "Unsupported peer cohorts deferred"
+  ],
+  "verification": "Complete run: grain, units, eligibility, grouping, baseline, feature allowlist and common evaluation pool passed"
+}

@@ -30,7 +30,7 @@
 <main id="paper">
 <article>
 <div class="paper-header">
-  <p class="eyebrow">FlyRank ML Internship / ML-11 / Research paper</p>
+  <p class="eyebrow">FlyRank ML Internship / ML-11 paper / ML-12 case-study update</p>
   <h1>Can a learned CTR benchmark improve editorial review prioritization?</h1>
   <p class="dek">A client-holdout study finds no exposure-weighted error advantage for the learned models, and defines what evidence an editorial review queue still needs.</p>
   <div class="byline"><span><strong>Orbin Sunny</strong><br>Machine Learning track</span><span><strong>4 October 2026</strong><br>CTR opportunity scoring</span></div>
@@ -39,14 +39,14 @@
 
 <section id="abstract" class="abstract" aria-labelledby="abstract-title">
   <h2 id="abstract-title">Abstract</h2>
-  <p>This study asks whether a learned CTR benchmark improves the measurable surrogate for an editorial review queue over a transparent peer rule. It uses a 30,000-page anonymized starter snapshot, retaining 12,009 pages across 28 clients under an explicit exposure and position policy. A shallow tree and random forest estimate same-window observed CTR using three allowlisted features, with training-only peers and disjoint client validation. The peer rule wins validation and records test weighted MAE of 0.383436 percentage points versus 0.385521 for the forest, while a later grouped audit favors a naive pooled-CTR reference. The resulting queue is proposed decision support for human inspection; independent editorial usefulness, future performance and causal edit benefits remain unmeasured.</p>
+  <p>This FlyRank case study asks whether a learned CTR benchmark can help editors decide which visible but low-click content to inspect first, compared with a transparent peer rule. It uses a 30,000-page anonymized starter snapshot, retaining 12,009 pages across 28 clients under an explicit exposure and position policy. A shallow tree and random forest estimate same-window observed CTR using three allowlisted features, with training-only peers and disjoint client validation. The peer rule wins validation and records test weighted MAE of 0.383436 percentage points versus 0.385521 for the forest, while a later grouped audit favors a naive pooled-CTR reference. For FlyRank's content-review problem, the result supports a cautious human-reviewed triage queue rather than model promotion; independent editorial usefulness, future performance and causal edit benefits remain unmeasured.</p>
 </section>
 
 <section id="introduction">
   <p class="section-number">01 / Introduction</p>
   <h2>Review attention is scarce; a CTR gap is only a starting point.</h2>
-  <p>An editor can inspect 20 pages in a review cycle, but thousands of visible pages capture few search clicks. A single low-CTR threshold does little to order that work: exact CTR below 0.5% flags 9,773 of the 12,009 eligible starter pages, or 81.38% of the pool.</p>
-  <p>The research question is whether a learned position-aware benchmark estimates observed CTR more accurately than a transparent position/content-type peer rule on unseen clients. The practical decision is which visible pages deserve authorized snippet, intent and measurement review. The unit of analysis is one page; the proposed output is a ranked queue with explicit reasons and abstentions.</p>
+  <p>FlyRank's real content problem is not simply finding pages with low CTR; it is deciding where a limited editorial review budget should go across a large client-content portfolio. An editor can inspect 20 pages in a review cycle, while thousands of visible pages capture few search clicks. A single low-CTR threshold does little to order that work: exact CTR below 0.5% flags 9,773 of the 12,009 eligible starter pages, or 81.38% of the pool.</p>
+  <p>This CTR opportunity-scoring lane turns that FlyRank problem into a testable question: does a learned position-aware benchmark estimate observed CTR more accurately than a transparent position/content-type peer rule on unseen clients? The practical decision is which visible pages deserve authorized snippet, intent and measurement review. The unit of analysis is one page; the proposed output is a ranked queue with explicit reasons and abstentions, not an automated editing system.</p>
   <p>A false positive wastes editorial time and may encourage a harmful unnecessary edit; a false negative leaves a possible opportunity uninspected. CTR estimation is a measurable surrogate for this decision. It is not an independent judgment that a page needs action, and the experiment does not measure improved traffic after editing.</p>
 </section>
 
@@ -177,7 +177,7 @@ python -m http.server 8000 --directory docs</code></pre>
   <p>The page's communication choices draw on <a href="https://www.nature.com/srep/author-instructions/submission-guidelines">Scientific Reports' manuscript guidance</a>, <a href="https://distill.pub/guide/">Distill's authoring guide</a>, the <a href="https://www.cs.mcgill.ca/~jpineau/ReproducibilityChecklist-v2.0.pdf">ML reproducibility checklist</a>, <a href="https://www.datawrapper.de/academy/annotate-tab">Datawrapper's chart annotations</a> and <a href="https://www.w3.org/WAI/tutorials/images/complex/">W3C's complex-image guidance</a>. These inform presentation; the linked notebooks and receipts supply all project findings.</p>
 </section>
 </article>
-<footer>Orbin Sunny · ML-11 · <a href="#top">Back to top ↑</a> · <a href="https://github.com/orbin123/flyrank-ml-internship">Repository</a></footer>
+<footer>Orbin Sunny · ML-11 paper / ML-12 case study · <a href="#top">Back to top ↑</a> · <a href="https://github.com/orbin123/flyrank-ml-internship">Repository</a></footer>
 </main>
 </div>
 </body>

@@ -295,11 +295,11 @@ def build():
     FIGURES.mkdir(parents=True, exist_ok=True)
     make_figures(model, audit, playbook)
     abstract = (
-        "This study asks whether a learned CTR benchmark improves the measurable surrogate for an editorial review queue over a transparent peer rule. "
+        "This FlyRank case study asks whether a learned CTR benchmark can help editors decide which visible but low-click content to inspect first, compared with a transparent peer rule. "
         "It uses a 30,000-page anonymized starter snapshot, retaining 12,009 pages across 28 clients under an explicit exposure and position policy. "
         "A shallow tree and random forest estimate same-window observed CTR using three allowlisted features, with training-only peers and disjoint client validation. "
         "The peer rule wins validation and records test weighted MAE of 0.383436 percentage points versus 0.385521 for the forest, while a later grouped audit favors a naive pooled-CTR reference. "
-        "The resulting queue is proposed decision support for human inspection; independent editorial usefulness, future performance and causal edit benefits remain unmeasured."
+        "For FlyRank's content-review problem, the result supports a cautious human-reviewed triage queue rather than model promotion; independent editorial usefulness, future performance and causal edit benefits remain unmeasured."
     )
     assert len(re.split(r"(?<=[.!?])\s+(?=[A-Z])", abstract)) == 5
     validation = {r["method"]: r for r in model["validation_metrics"]}

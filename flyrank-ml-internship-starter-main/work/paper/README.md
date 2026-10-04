@@ -1,4 +1,4 @@
-# ML-11 paper
+# ML-11 paper · ML-12 case-study update
 
 **Author:** Orbin Sunny · **Lane:** CTR opportunity scoring · **Date:** 4 October 2026
 
@@ -26,3 +26,5 @@ The static build requires no warehouse credentials. The separate March warehouse
 Publish `main` → root `/docs` with GitHub Pages. Assets use relative paths and `.nojekyll` disables Jekyll processing. The exact public URL is recorded on one line in `submission/paper_url.txt`. Local checks cover sections, links/assets, receipt agreement, missing labels, public-output restrictions and URL format; live deployment and portal submission are verified separately.
 
 The main study reports a negative result: the peer rule beats the learned challengers on the original exposure-weighted objective, and a naive pooled-CTR reference wins the later grouped audit. It does not measure editorial actionability, future CTR, causal refresh effects or revenue.
+
+For ML-12, the paper's abstract and introduction explicitly connect that result to FlyRank's limited-attention content-review problem. The executed capstone notebook closes with a timed five-minute demo outline, a copy-ready social post and a three-sentence employer summary.

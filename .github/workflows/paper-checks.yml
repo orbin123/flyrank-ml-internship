@@ -7,6 +7,7 @@ on:
       - docs/**
       - flyrank-ml-internship-starter-main/work/**
       - flyrank-ml-internship-starter-main/submission/paper_url.txt
+      - submission/paper_url.txt
       - .github/workflows/paper-checks.yml
   pull_request:
   workflow_dispatch:

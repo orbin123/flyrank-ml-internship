@@ -282,6 +282,7 @@ def verify_site():
         elif isinstance(obj, list):
             for value in obj: safe_keys(value)
     safe_keys(evidence)
+    assert (REPO / "submission/paper_url.txt").read_text() == URL + "\n"
     assert (STARTER / "submission/paper_url.txt").read_text() == URL + "\n"
     return {"required_sections": len(parser.sections), "figures": len(parser.images) // 2,
             "mobile_figure_variants": len(parser.images) // 2,
@@ -343,6 +344,8 @@ def build():
     (SITE / ".nojekyll").write_text("")
     shutil.copyfile(PAPER / "styles.css", SITE / "styles.css")
     (SITE / "assets/evidence.json").write_text(json.dumps(evidence, indent=2, allow_nan=False) + "\n")
+    (REPO / "submission").mkdir(parents=True, exist_ok=True)
+    (REPO / "submission/paper_url.txt").write_text(URL + "\n")
     (STARTER / "submission/paper_url.txt").write_text(URL + "\n")
     checks = verify_site()
     receipt = {"assignment": "ML-11", "paper_url": URL, "input_sha256": HASH,

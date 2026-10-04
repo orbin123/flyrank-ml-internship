@@ -2,9 +2,11 @@
 
 [Read the ML-11 research paper](https://orbin123.github.io/flyrank-ml-internship/) ·
 [Executed capstone notebook](flyrank-ml-internship-starter-main/work/notebooks/capstone.ipynb) ·
-[Deployed URL file](flyrank-ml-internship-starter-main/submission/paper_url.txt)
+[Deployed URL file](submission/paper_url.txt)
 
 The starter repository is nested in [`flyrank-ml-internship-starter-main/`](flyrank-ml-internship-starter-main/). All analysis, paper source and reproducibility instructions live in its [`work/`](flyrank-ml-internship-starter-main/work/) directory. The root `docs/` folder contains only the generated public research page and aggregate evidence, published with GitHub Pages.
+
+The capstone's canonical paper URL is in the repository-root `submission/paper_url.txt`. The nested starter copy is retained for existing assignment links; the paper builder keeps both copies identical.
 
 The paper compares CTR benchmarks on the approved 30,000-page starter snapshot. Learned models do not improve the original exposure-weighted holdout result; the later grouped audit also favors a naive reference. The proposed editorial queue still requires independent human-review evidence. The separate warehouse data-contract exercise is clearly distinguished from these main results.
 
